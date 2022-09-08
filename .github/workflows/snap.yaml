@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        track:
+        - ${{ inputs.release == 'lts' && 'lts' || 'latest' }}
         platform:
         - amd64
         - i386
@@ -48,4 +50,4 @@ jobs:
       with:
         store_login: ${{ secrets.STORE_TOKEN }}
         snap: ${{ steps.snapcraft.outputs.snap }}
-        release: ${{ inputs.release == 'lts' && 'lts/stable' || inputs.release }}
+        release: ${{ format('{0}/edge/test', matrix.track) }}
